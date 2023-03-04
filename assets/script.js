@@ -6,6 +6,7 @@ var resultTextEl = document.querySelector(".text")
 var btn = $('.btn')
 var lat
 var long
+var weatherCondition
 //
 //var heading =document.querySelector(".class")
 
@@ -67,7 +68,9 @@ $("#search-btn").on("click", function () {
              return res.json();
            })
            .then(data => {
-             console.log(data);})
+             console.log(data);
+             weatherCondition = data.weather[0].main;
+            console.log(weatherCondition)})
 
 
           }
