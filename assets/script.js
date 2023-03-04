@@ -7,11 +7,11 @@ var btn = $('.btn')
 var lat
 var long
 var weatherCondition
-var searchhistory =[]
+
 //
 //var heading =document.querySelector(".class")
 
-
+var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
 
 $("#search-btn").on("click", function () {
@@ -33,40 +33,28 @@ $("#search-btn").on("click", function () {
         }
         return res.json();
       })
+     
       .then(data => {
         console.log(data);
         data.forEach(location => {
           lat = location.lat.toFixed(2);
           long = location.lon.toFixed(2);
-          //console.log(lat + " " + long)
-          localStorage.setItem("latitude",lat);
-          localStorage.setItem("longitude", long)
           $(".search").append ("<button class=button>")
           var buttonTest = document.querySelector(".button")
           buttonTest.textContent= location.name
-          localStorage.getItem(searchhistory)
-        
-        })
-          })
-        }})
-      
-        $("#weather-btn").on("click", function () {
-          event.preventDefault();
+          searchHistory.push({Location:location.name, Latitude: lat, Longitude: long});
+          localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
           var weatherQueryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&appid=6cdac48da9c3705ea4ff93e00c557ffc"
-          searchWeather();
-          function searchWeather (lat, long) {
-           fetch(weatherQueryURL)
-           .then(res => {
-             if (!res.ok) {
-               throw res.json();
-             }
-             return res.json();
-           })
-           .then(data => {
-             console.log(data);
-             weatherCondition = data.weather[0].main;
-            console.log(weatherCondition)
-            $('.forecast').append ("<h3 class=location>");
+          fetch(weatherQueryURL)
+          .then(res => {
+            if (!res.ok) {
+              throw res.json();
+            }
+            return res.json();
+        })
+        .then(data =>{
+          console.log(data)
+          $('.forecast').append ("<h3 class=location>");
             var locHeading =document.querySelector(".location");
             locHeading.textContent=data.name;
             $('.forecast').append ("<h4 class=mainWeather>");
@@ -86,6 +74,27 @@ $("#search-btn").on("click", function () {
             var humidity=$('<h5>')
             humidity.text("Humidity: "+ data.main.humidity +"%")
             $('.forecast').append(humidity)
+        })
+      })
+        })}})
+      
+        $("#weather-btn").on("click", function () {
+          event.preventDefault();
+         
+          searchWeather();
+          function searchWeather (lat, long) {
+           fetch(weatherQueryURL)
+           .then(res => {
+             if (!res.ok) {
+               throw res.json();
+             }
+             return res.json();
+           })
+           .then(data => {
+             console.log(data);
+             weatherCondition = data.weather[0].main;
+            console.log(weatherCondition)
+            
 
            
            })
@@ -98,17 +107,6 @@ $("#search-btn").on("click", function () {
    
         
 
-     /*.then(data => {
-              fetch(weatherQueryURL)
-                .then(res => {
-                  if (!res.ok) {
-                    throw res.json();
-                  }
-                  return res.json();
-                })
-                .then(data => {
-                  console.log(data);
-                })
-            })*/
-      
+     //Code source for image: https://stackoverflow.com/questions/44177417/how-to-display-openweathermap-weather-icon
+     //Code source for state list: https://gist.github.com/RichLogan/9903043
 
