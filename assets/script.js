@@ -61,7 +61,10 @@ $(document).ready(function() {
               console.log(data)
               $('.forecast').append("<h3 class=location>");
               var locHeading = document.querySelector(".location");
-              locHeading.textContent = data.name + date;
+              locHeading.textContent = data.name;
+              $('.forecast').append("<h5 class=date>");
+              var locHeading = document.querySelector(".date");
+              locHeading.textContent = date;
               $('.forecast').append("<h4 class=mainWeather>");
               var locHeading = document.querySelector(".mainWeather");
               locHeading.textContent = data.weather[0].main;
@@ -183,10 +186,13 @@ $("#search-btn").on("click", function () {
               return res.json();
             })
             .then(data => {
-              console.log(data)
+              
               $('.forecast').append("<h3 class=location>");
               var locHeading = document.querySelector(".location");
-              locHeading.textContent = data.name + date;
+              locHeading.textContent = data.name;
+              $('.forecast').append("<h5 class=date>");
+              var locHeading = document.querySelector(".date");
+              locHeading.textContent = date;
               $('.forecast').append("<h4 class=mainWeather>");
               var locHeading = document.querySelector(".mainWeather");
               locHeading.textContent = data.weather[0].main;
@@ -205,10 +211,53 @@ $("#search-btn").on("click", function () {
               humidity.text("Humidity: " + data.main.humidity + "%")
               $('.forecast').append(humidity)
             })
+            var forecastURL= "https://api.openweathermap.org/data/2.5/forecast?lat=" +lat +"&lon="+long +"&appid=6cdac48da9c3705ea4ff93e00c557ffc"
+            fetch(forecastURL)
+            .then(res => {
+              if (!res.ok) {
+                throw res.json();
+              }
+              return res.json();
+            })
+            .then(data =>{
+              console.log(data);
+              var foreCastFive = data.list;
+              var foreCastRefine =foreCastFive.splice(0,5)
+              console.log(foreCastRefine)
+              foreCastRefine.forEach(dayFore =>{
+                
+              $('.forecast').append("<h5 class=date>");
+              var locHeading = document.querySelector(".date");
+              locHeading.textContent = date;
+              $('.forecast').append("<h4 class=mainWeather>");
+              var locHeading = document.querySelector(".mainWeather");
+              locHeading.textContent = dayFore.weather[0].main;
+              $('.forecast').append("<img class=icon>");
+              var locHeading = document.querySelector(".icon");
+              var iconcode = dayFore.weather[0].icon
+              var iconurl = "http://openweathermap.org/img/w/" + iconcode + ".png"
+              $('.icon').attr('src', iconurl)
+              var currentTemp = $('<h5>')
+              currentTemp.text("Temperature: " + ((dayFore.main.temp - 273.15) * (9 / 5) + 32).toFixed(2) + "\u{00B0}F")
+              $('.forecast').append(currentTemp)
+              var wind = $('<h5>')
+              wind.text("Wind Speed: " + (dayFore.wind.speed * 2.237).toFixed(2) + "mph")
+              $('.forecast').append(wind)
+              var humidity = $('<h5>')
+              humidity.text("Humidity: " + dayFore.main.humidity + "%")
+              $('.forecast').append(humidity)
+
+              })
+              
+
+              })
+
+              
+            })
+
         })
-      })
-  }
-})
+      }})
+  
 
 
 
