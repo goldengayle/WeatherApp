@@ -29,7 +29,9 @@ $(document).ready(function() {
   var locName = searchHistory[i].Location;
   console.log(locName)
   listItem.textContent =locName;
-  listItem.classList.add(locName);
+  var locNameRefine= locName.replace(/ /g,"%20");
+  console.log(locNameRefine)
+  listItem.classList.add(locNameRefine);
   }
 
   var locations = $('.pastItem')
@@ -39,7 +41,9 @@ $(document).ready(function() {
      
       $(this).removeClass("pastItem");
       var classLoc = $(this).attr("class");
-      var index = locationNamesa.indexOf(classLoc)
+      var classLocRefine =classLoc.replace(/%20/g," ")
+      console.log(classLocRefine)
+      var index = locationNamesa.indexOf(classLocRefine)
       var pastObject = searchHistory[index];
       lat = pastObject.Latitude
       long = pastObject.Longitude
@@ -128,7 +132,10 @@ $(document).ready(function() {
 //On click - Api calls to get latitude/longitude, data is stored and used to call for current and forecast weather
 $("#search-btn").on("click", function () {
   event.preventDefault();
-  var searchCity = $(".search-input").val();
+  var presearchCity = $(".search-input").val();
+  var searchCity =presearchCity.trim().replace(/ /g, "%20")
+  console.log(searchCity)
+
   var searchState = $(".form-control").children("option:selected").val();
   var apiQueryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchCity + "," + searchState + ",+1&limit=1&appid=6cdac48da9c3705ea4ff93e00c557ffc"
 
@@ -156,7 +163,8 @@ $("#search-btn").on("click", function () {
           var listItem = document.querySelector(".pastItem")
           var locNameb = location.name;
           listItem.textContent =locNameb;
-          listItem.classList.add(locNameb);
+          var locNamebRefine =locNameb.replace(/ /g,"%20")
+          listItem.classList.add(locNamebRefine);
           var locationNamesb = [];
           for (i = 0; i < searchHistory.length; i++) {
           locationNamesb.push(searchHistory[i].Location)
