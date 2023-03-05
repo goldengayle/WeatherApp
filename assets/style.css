@@ -1,13 +1,19 @@
 
-.main{
-    display:inline;
-}
+
 h1 {
     background-color: blue;
     color:white;
+}
+h3 {
+    display:space-around;
 }
 .btn {
     background-color:aqua
 
 }
 
+.foreCard {
+    display:flex;
+}
+
+.fore
