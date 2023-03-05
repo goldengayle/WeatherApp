@@ -13,18 +13,99 @@ var locationNamesa
 //
 //var heading =document.querySelector(".class")
 // On load, page has buttons to access past searches
-var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+var getHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+var searchHistory=getHistory.reverse();
+
+var topTen =searchHistory.splice(0, 8);
+searchHistory =topTen.reverse();
+
 $(document).ready(function() {
   $(".search").append("<ul class=pastSearch>");
   var locationNamesa = [];
-  for (i = 0; i < searchHistory.length; i++) {
+  for (i = 0;  i < searchHistory.length; i++) {
   locationNamesa.push(searchHistory[i].Location)
   $(".pastSearch").prepend("<li class=pastItem>")
   var listItem = document.querySelector(".pastItem")
   var locName = searchHistory[i].Location;
   console.log(locName)
   listItem.textContent =locName;
+  listItem.classList.add(locName);
   }
+
+  var locations = $('.pastItem')
+  for (i=0; i <locations.length; i++){
+    locations[i].addEventListener('click', function(){
+      $('.forecast').html("")
+     
+      $(this).removeClass("pastItem");
+      var classLoc = $(this).attr("class");
+      var index = locationNamesa.indexOf(classLoc)
+      var pastObject = searchHistory[index];
+      lat = pastObject.Latitude
+      long = pastObject.Longitude
+      console.log(lat +''+long)
+      var weatherQueryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&appid=6cdac48da9c3705ea4ff93e00c557ffc"
+          fetch(weatherQueryURL)
+          // Data is manipulated on the page after being fetched
+            .then(res => {
+              if (!res.ok) {
+                throw res.json();
+              }
+              return res.json();
+            })
+            .then(data => {
+              console.log(data)
+              $('.forecast').append("<h3 class=location>");
+              var locHeading = document.querySelector(".location");
+              locHeading.textContent = data.name + date;
+              $('.forecast').append("<h4 class=mainWeather>");
+              var locHeading = document.querySelector(".mainWeather");
+              locHeading.textContent = data.weather[0].main;
+              $('.forecast').append("<img class=icon>");
+              var locHeading = document.querySelector(".icon");
+              var iconcode = data.weather[0].icon
+              var iconurl = "http://openweathermap.org/img/w/" + iconcode + ".png"
+              $('.icon').attr('src', iconurl)
+              var currentTemp = $('<h5>')
+              currentTemp.text("Temperature: " + ((data.main.temp - 273.15) * (9 / 5) + 32).toFixed(2) + "\u{00B0}F")
+              $('.forecast').append(currentTemp)
+              var wind = $('<h5>')
+              wind.text("Wind Speed: " + (data.wind.speed * 2.237).toFixed(2) + "mph")
+              $('.forecast').append(wind)
+              var humidity = $('<h5>')
+              humidity.text("Humidity: " + data.main.humidity + "%")
+              $('.forecast').append(humidity)
+            })
+      
+      console.log(pastObject)
+    })
+  }
+
+
+
+  //for (i=0 ; i < saveButton.length; i++) {
+  //  saveButton[i].addEventListener('click', function(){
+  
+   //var info= $(this).siblings("textarea").val();
+   //var hour= $(this).parent().attr('id');
+    //console.log(info)
+    //localStorage.setItem(hour, info);
+  //})}
+  
+  //hourBlocks.each (function () {
+    //var numID = $(this).attr('id');
+    //var pnum = parseInt(numID)
+   // console.log(pnum)
+   // if(pnum > nowHour ){
+    //  $(this).addClass('future');
+    //} else if 
+    //  (pnum === nowHour){
+    //    $(this).addClass('present');
+    //  } else{
+    //    $(this).addClass('past');
+    //  }
+  //  }
+  //onsole.log(locations)
 
     
     //for (i = 0; i < locationNamesa.length; i++){
@@ -67,12 +148,15 @@ $("#search-btn").on("click", function () {
 
       .then(data => {
         console.log(data);
+        $('.forecast').html("")
         data.forEach(location => {
           lat = location.lat.toFixed(2);
           long = location.lon.toFixed(2);
-          $(".search").append("<button class=button>")
-          var buttonTest = document.querySelector(".button")
-          buttonTest.textContent = location.name
+          $(".pastSearch").prepend("<li class=pastItem>")
+          var listItem = document.querySelector(".pastItem")
+          var locNameb = location.name;
+          listItem.textContent =locNameb;
+          listItem.classList.add(locNameb);
           var locationNamesb = [];
           for (i = 0; i < searchHistory.length; i++) {
           locationNamesb.push(searchHistory[i].Location)
