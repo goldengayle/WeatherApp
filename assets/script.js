@@ -7,7 +7,7 @@ var btn = $('.btn')
 var lat
 var long
 var weatherCondition
-var date = " " + dayjs().format('dddd, MMMM D YYYY ')
+var date = " " + dayjs().format('dddd, MMMM D YYYY')
 var locationNamesa
 
 //
@@ -222,13 +222,28 @@ $("#search-btn").on("click", function () {
             .then(data =>{
               console.log(data);
               var foreCastFive = data.list;
-              var foreCastRefine =foreCastFive.splice(0,5)
+              var tomorrowNoon = dayjs().add(1, 'day')
+              var lookForTomorrow =dayjs(tomorrowNoon).format('YYYY-MM-DD 12:00:00')
+              console.log(lookForTomorrow)
+              for( i=0; i<8; i++){
+                if (foreCastFive[i].dt_txt === lookForTomorrow){
+                  var indexBegin =i
+                }
+
+              }
+              
+                console.log(foreCastFive[0].dt_txt)
+                  
+              
+                console.log(indexBegin)
+              var interval = 8
+              var foreCastRefine =[foreCastFive[indexBegin], foreCastFive[indexBegin+interval],foreCastFive[indexBegin+(2*interval)], foreCastFive[indexBegin+(3*interval)], foreCastFive[indexBegin+(4*interval)]]
               console.log(foreCastRefine)
               foreCastRefine.forEach(dayFore =>{
                 
-              $('.forecast').append("<h5 class=date>");
-              var locHeading = document.querySelector(".date");
-              locHeading.textContent = date;
+                var dateForeCast =$('<h5>');
+                dateForeCast.text(dayjs(dayFore.dt_txt).format('dddd, MMMM D YYYY'));
+                $('.forecast').append(dateForeCast)
               $('.forecast').append("<h4 class=mainWeather>");
               var locHeading = document.querySelector(".mainWeather");
               locHeading.textContent = dayFore.weather[0].main;
@@ -250,13 +265,12 @@ $("#search-btn").on("click", function () {
               })
               
 
-              })
+              })})
 
               
             })
 
-        })
-      }})
+        }})
   
 
 
