@@ -157,7 +157,7 @@ function getForeCast() {
       var foreCastRefine = [foreCastFive[indexBegin], foreCastFive[indexBegin + interval], foreCastFive[indexBegin + (2 * interval)], foreCastFive[indexBegin + (3 * interval)], foreCastFive[indexBegin + (4 * interval)]]
       foreCastRefine.forEach(dayFore => {
        var weatherDay =$('<div class=weatherDay>');
-       weatherDay.addClass("card text-white bg-primary mb-3 col-2")
+       weatherDay.addClass("card text-white bg-primary mb-3 col-12 col-sm-6	col-md-4	col-lg-2")
       $('.foreCard').append(weatherDay)
         
         var dateForeCast = $('<h5>');
@@ -227,20 +227,42 @@ $("#search-btn").on("click", function () {
         data.forEach(location => {
           lat = location.lat.toFixed(2);
           long = location.lon.toFixed(2);
-          $(".pastSearch").prepend("<li class=pastItem>")
-          listItem = document.querySelector(".pastItem")
+          $(".pastSearch").prepend("<li class=recentItem>")
+          listItem = document.querySelector(".recentItem")
           var locNameb = location.name +" " +searchState;
+          var locNamec=location.name
           listItem.textContent = locNameb;
           var locNamebRefine = locNameb.replace(/ /g, "%20")
-          listItem.classList.add(locNamebRefine);
+          listItem.classList.add(locNamec);
           var locationNamesb = [];
           for (i = 0; i < searchHistory.length; i++) {
             locationNamesb.push(searchHistory[i].Location)
           }
           if (locationNamesb.indexOf(location.name) === -1) {
             searchHistory.push({ Location: location.name, Latitude: lat, Longitude: long, State: searchState })
+            locationNamesb.push(locNamec)
           };
           localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+          console.log(searchHistory)
+          listItem.addEventListener("click", function () {
+            $('.foreCard').html("")
+            $('.current').html("")
+            $(this).removeClass("recentItem");
+            var classLoc = $(this).attr("class");
+            
+            var classLocRefine = classLoc.replace(/%20/g, " ")
+            var index = locationNamesb.indexOf(classLocRefine)
+            console.log(classLocRefine)
+            console.log(locationNamesb)
+            console.log(searchHistory)
+            var pastObject = searchHistory[index];
+            lat = pastObject.Latitude
+            long = pastObject.Longitude
+            searchState = pastObject.State
+            getForeCast();
+            getWeather(lat, long);
+            $(this).addClass("recentItem");
+           });
           getForeCast();
           getWeather(lat, long);
           
