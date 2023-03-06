@@ -4,8 +4,8 @@ h1 {
     background-color: blue;
     color:white;
 }
-h3 {
-    display:space-around;
+h5{
+    font-size:15px;
 }
 .btn {
     background-color:aqua
@@ -16,4 +16,6 @@ h3 {
     display:flex;
 }
 
-.fore
+li {
+    text-decoration:underline;
+}
