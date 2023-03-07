@@ -6,7 +6,7 @@ This project utilizes the OpenWeatherAPI to display current and future weather c
 ## Usage
 AS A USER I want to explore weather conditions in multiple cities to 
 <br><a href="https://goldengayle.github.io/WeatherApp/">Weather App</a>
-<br><img src="passwordgeneratorscreenshot.png" alt="screenshot of password generator">
+<br><img src="WeatherScreenshot.png" alt="screenshot of weather app">
 
 ## Installation
 N/A
