@@ -165,7 +165,7 @@ $("#search-btn").on("click", function () {
     alert("please enter a value to get weather")
     return;
   }
-  var apiQueryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchCity + "," + searchState + ",+1&limit=1&appid=6cdac48da9c3705ea4ff93e00c557ffc"
+  var apiQueryURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + searchCity + "," + searchState + ",+1&limit=1&appid=6cdac48da9c3705ea4ff93e00c557ffc"
   searchApi();
   function searchApi() {
     fetch(apiQueryURL)
@@ -234,6 +234,5 @@ $("#search-btn").on("click", function () {
 
 
 
-     //Code source for image: https://stackoverflow.com/questions/44177417/how-to-display-openweathermap-weather-icon
-     //Code source for state list: https://gist.github.com/RichLogan/9903043
+     
 
