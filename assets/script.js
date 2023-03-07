@@ -85,7 +85,7 @@ function getWeather(lat, long) {
       $('.current').append("<img class=icon>");
       var locHeading = document.querySelector(".icon");
       var iconcode = data.weather[0].icon
-      var iconurl = "http://openweathermap.org/img/w/" + iconcode + ".png"
+      var iconurl = "https://openweathermap.org/img/w/" + iconcode + ".png"
       $('.icon').attr('src', iconurl)
       var currentTemp = $('<h5>')
       currentTemp.text("Temperature: " + ((data.main.temp - 273.15) * (9 / 5) + 32).toFixed(2) + "\u{00B0}F")
@@ -116,15 +116,16 @@ function getForeCast() {
       var foreCastFive = data.list;
       var tomorrowNoon = dayjs().add(1, 'day')
       var lookForTomorrow = dayjs(tomorrowNoon).format('YYYY-MM-DD 12:00:00')
-      for (i = 0; i < 8; i++) {
+      for (i = 0; i < 9; i++) {
         if (foreCastFive[i].dt_txt === lookForTomorrow) {
           var indexBegin = i
         }
-
+//if 9, then only four dates
       }
     var numberOf = 0
       var interval = 8
       var foreCastRefine = [foreCastFive[indexBegin], foreCastFive[indexBegin + interval], foreCastFive[indexBegin + (2 * interval)], foreCastFive[indexBegin + (3 * interval)], foreCastFive[indexBegin + (4 * interval)]]
+    
       foreCastRefine.forEach(dayFore => {
        var weatherDay =$('<div class=weatherDay>');
        weatherDay.addClass("card text-white bg-primary mb-3 col-12 col-sm-6	col-md-4	col-lg-2")
@@ -137,7 +138,7 @@ function getForeCast() {
         $("div.weatherDay:last-of-type").append(mainWeatherFore);
        var imageIcon = $('<img>') 
         var iconcode = dayFore.weather[0].icon
-        var iconurl = "http://openweathermap.org/img/w/" + iconcode + ".png"
+        var iconurl = "https://openweathermap.org/img/w/" + iconcode + ".png"
         $("div.weatherDay:last-of-type").append(imageIcon);
         imageIcon.attr("src",iconurl)
         var currentTemp = $('<h5>')
