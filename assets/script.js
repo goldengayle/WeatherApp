@@ -160,13 +160,16 @@ $("#search-btn").on("click", function () {
   $('.foreCard').html("")
       $('.current').html("")
   var presearchCity = $(".search-input").val();
-  var searchCity = presearchCity.trim().replace(/ /g, "%20")
+  console.log(presearchCity)
+  var searchCity = presearchCity.replace(/ /g, "%20")
+  console.log(searchCity)
   searchState = $(".form-control").children("option:selected").val();
   if (searchCity === ""){
     alert("please enter a value to get weather")
     return;
   }
   var apiQueryURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + searchCity + "," + searchState + ",+1&limit=1&appid=6cdac48da9c3705ea4ff93e00c557ffc"
+  console.log(apiQueryURL)
   searchApi();
   function searchApi() {
     fetch(apiQueryURL)
@@ -187,7 +190,8 @@ $("#search-btn").on("click", function () {
           var locNamec=location.name
           listItem.textContent = locNameb;
           var locNamebRefine = locNameb.replace(/ /g, "%20")
-          listItem.classList.add(locNamec);
+          var locNamecRefine = locNamec.replace(/ /g, "%20")
+          listItem.classList.add(locNamecRefine);
           var locationNamesb = [];
           for (i = 0; i < searchHistory.length; i++) {
             locationNamesb.push(searchHistory[i].Location)
